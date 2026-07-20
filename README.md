@@ -15,7 +15,6 @@
 - **Final Rank:** **80th / 222 Teams**
 - **Task:** Detect whether a Bengali Large Language Model (LLM) generated answer is **faithful** or **hallucinated**.
 
----
 
 # Problem Statement
 
@@ -25,8 +24,6 @@ Given a question, answer, and optionally supporting context, the objective is to
 
 - **0 → Hallucinated**
 - **1 → Faithful**
-
----
 
 # Our Solution
 
@@ -46,8 +43,6 @@ Features include:
 - Bangla-specific preprocessing
 - Context-aware classification
 
----
-
 ## Null Context Branch
 
 When no supporting context is available, the model follows a dedicated pipeline:
@@ -58,8 +53,6 @@ When no supporting context is available, the model follows a dedicated pipeline:
 4. Hybrid prediction model
 
 This branch is specifically designed for cases where external evidence is unavailable.
-
----
 
 ## Fusion Strategy
 
@@ -72,8 +65,6 @@ The outputs from both branches are combined using:
 
 The original hybrid prediction is preserved whenever fusion does not improve validation performance.
 
----
-
 # Project Pipeline
 
 ```
@@ -81,38 +72,22 @@ The original hybrid prediction is preserved whenever fusion does not improve val
                       │
          ┌────────────┴────────────┐
          │                         │
-   Context Available?         No Context
+  Context Available?           No Context
          │                         │
          ▼                         ▼
- Context Branch            BanglaBERT Pipeline
+  Context Branch            BanglaBERT Pipeline
          │                         │
          ▼                         ▼
- Context Classifier       Retrieval + Verifier
+  Context Classifier       Retrieval + Verifier
          │                         │
          └────────────┬────────────┘
                       │
               Soft Voting Fusion
                       │
-          Logistic Regression Stack
+		   Logistic Regression Stack
                       │
                 Final Prediction
 ```
-
----
-
-# Dataset
-
-The pipeline expects the processed competition dataset.
-
-Required files:
-
-```
-final_train_max.parquet
-official_folds.csv
-competition_test.csv
-```
-
----
 
 # Technologies Used
 
@@ -124,8 +99,6 @@ competition_test.csv
 - Pandas
 - NumPy
 
----
-
 # Model Components
 
 - BanglaBERT
@@ -135,8 +108,6 @@ competition_test.csv
 - Soft Voting Ensemble
 - Stacking Ensemble
 
----
-
 # Validation Strategy
 
 - 5-Fold Cross Validation
@@ -144,19 +115,12 @@ competition_test.csv
 - Threshold Optimization
 - Macro F1 Score Evaluation
 
----
+# Dataset
 
-# Repository Structure
+You can download the dataset from Kaggle:
 
-```
-.
-├── Bengali_Hallucination_Final.ipynb
-├── README.md
-├── requirements.txt
-└── assets/
-```
-
----
+**🔗 Kaggle Dataset:**  
+`https://www.kaggle.com/datasets/tofayelhossain/hallucinate-dataset`
 
 # How to Run
 
@@ -178,12 +142,10 @@ pip install -r requirements.txt
 Open:
 
 ```
-Bengali_Hallucination_Final.ipynb
+bengali_hallucination_final.ipynb
 ```
 
 Run all cells on a GPU-enabled environment (Kaggle or Google Colab).
-
----
 
 # Results
 
@@ -191,20 +153,16 @@ Run all cells on a GPU-enabled environment (Kaggle or Google Colab).
 |---------|------:|
 | Competition Rank | **80 / 222 Teams** |
 | Validation | 5-Fold Cross Validation |
-| Ensemble | Soft Voting + Logistic Regression Stacking |
+| Ensemble | Logistic Regression Stacking |
 | Language | Bengali |
-
----
 
 # Future Improvements
 
-- Larger Bengali retrieval corpus
-- Improved evidence verification
-- Stronger transformer backbones
-- Knowledge-augmented retrieval
-- Better calibration and threshold optimization
-
----
+- Integrate Wikipedia-based retrieval for external fact verification.
+- Explore Retrieval-Augmented Generation (RAG).
+- Experiment with larger Bengali language models.
+- Improve ensemble learning and threshold optimization.
+- Expand the training dataset with more diverse examples.
 
 # Team
 
@@ -215,13 +173,3 @@ Computer Science & Engineering
 American International University-Bangladesh (AIUB)
 
 GitHub: https://github.com/tofayel-hossain
-
----
-
-# Acknowledgements
-
-Thanks to the competition organizers for providing the dataset and evaluation platform, enabling research on hallucination detection for Bengali Large Language Models.
-
----
-
-## ⭐ If you found this project useful, consider giving the repository a star.
